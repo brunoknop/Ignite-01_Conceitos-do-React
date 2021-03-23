@@ -18,19 +18,21 @@ export function TaskList() {
 
   function handleCreateNewTask() {
     idCounter += 1;
-    if(newTaskTitle !== '')
-      setTasks([...tasks, {id: idCounter, title: newTaskTitle, isComplete: false}])
+    if(!newTaskTitle) return;
+    const newTask = {
+      id: idCounter,
+      title: newTaskTitle,
+      isComplete: false
+    }
+    setTasks(oldState => [...oldState, newTask]);
+    setNewTaskTitle('');
   }
 
   function handleToggleTaskCompletion(id: number) {
-    const alteredTasks = tasks.map(task => {
-      if (task.id === id) {
-        if(!task.isComplete) task.isComplete = true;
-        else task.isComplete = false;
-        return task;
-      }
-      return task;
-    })
+    const alteredTasks =  tasks.map(task => task.id === id ? {
+      ...task,
+      isComplete: !task.isComplete
+    } : task);
     setTasks(alteredTasks);
   }
 
